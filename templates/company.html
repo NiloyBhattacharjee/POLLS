@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ company_name }} - Company Details</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+ <body>
+  <h1>{{ company_name }} - Company Details</h1>
+  {% if company_details %}
+  <ul>
+    <li><strong>Total Donations:</strong> ${{ company_details['total_donations'] }}</li>
+    <li><strong>Total Democratic Donations: $</strong> {{ company_details['total_dem_donations'] }}</li>
+    <li><strong>Total Republican Donations: $</strong> {{ company_details['total_rep_donations'] }}</li>
+  </ul>
+  <canvas id="myChart" width="10" height="5"></canvas>
+  {% else %}
+  <p>Company details not found.</p>
+  {% endif %}
+
+  <script>
+    // Get the total donations, total democratic donations, and total republican donations from the company details
+    var total_donations = {{ company_details['total_donations'] }};
+    var total_dem_donations = {{ company_details['total_dem_donations'] }};
+    var total_rep_donations = {{ company_details['total_rep_donations'] }};
+
+    // Create the data for the chart
+    var data = {
+      labels: ['Total Donations', 'Total Democratic Donations', 'Total Republican Donations'],
+      datasets: [{
+        label: 'Donations',
+        data: [total_donations, total_dem_donations, total_rep_donations],
+        backgroundColor: [
+          'rgba(255, 206, 86, 0.2)', 
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 99, 132, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 206, 86, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 99, 132, 1)',
+          
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    // Create the options for the chart
+    var options = {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    };
+
+    // Get the canvas element and create the chart
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: data,
+      options: options
+    });
+  </script>
+</body>
+</html>
